@@ -1,6 +1,6 @@
 <template>
-  <main class="licenseRevoked">
-    <form id="signIn" class="form" >
+  <main class="licenseRevoked" >
+    <form id="sign1" class="form"  >
       <div class="wrap active" id="step1">
         <div class="content">
           <h2 class="title">
@@ -21,7 +21,7 @@
                 Simpego
               </b-form-checkbox>
             </div>
-            <div class="s1">
+            <div class="s1" >
               <b-form-checkbox
                   id="checkbox-2"
                   v-model="company2"
@@ -56,12 +56,14 @@
             </div>
             <span>Or keep driving, improve your driving score and save more!</span>
 
-              <router-link to="/step2">
-                <button  style="height: 48px; width: 90%;" :disabled="this.company1===false && company2===false && company3===false && company4===false"
-                         class="button" name="next" type="submit" @click="submitHandler" >
-                  Next
-                </button>
-              </router-link>
+             <div @click="windowonload">
+               <router-link  to="/step2">
+                 <button  style="height: 48px; width: 90%;" :disabled="this.company1===false && company2===false && company3===false && company4===false"
+                          class="button" name="next" type="reset"  @click="submitHandler" >
+                   Next
+                 </button>
+               </router-link>
+             </div>
           </div>
         </div>
       </div>
@@ -81,16 +83,23 @@ export default {
     }
   },
   created() {
-    const dataStep1 = this.$store.getters.sendStep1
-    console.log(dataStep1)
+
+     const dataStep1 = this.$store.getters.sendStep1
     if(dataStep1){
       this.company1 = dataStep1.company1
       this.company2 = dataStep1.company2
       this.company3 = dataStep1.company3
       this.company4 = dataStep1.company4
     }
+
   },
   methods: {
+    windowonload  () {
+      if (! localStorage.justOnce1) {
+        localStorage.setItem("justOnce1", "true");
+        window.location.reload();
+      }
+    },
     submitHandler(){
       const step1 = {
         company1: this.company1,
@@ -99,6 +108,7 @@ export default {
         company4: this.company4,
       }
       console.log(step1)
+      // await this.windowonload()
       this.$store.dispatch('addFormStep1', step1)
     }
 

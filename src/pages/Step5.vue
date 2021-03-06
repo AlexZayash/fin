@@ -172,12 +172,14 @@
                 <img src="../static/images/icons/arrow-left.svg" alt="">
                 Back
               </router-link>
-              <router-link to="/step6">
-                <button class="button" name="next" type="submit" :disabled="changeFirst && form.street && changeHouse
+              <div @click="windowonload">
+                <router-link to="/step6">
+                  <button class="button" name="next" type="reset" :disabled="changeFirst && form.street && changeHouse
                  && form.PlaceObj && changePostcode && changeFirst && cntBtnStatus" @click="submitHandler">
-                  Continue
-                </button>
-              </router-link>
+                    Continue
+                  </button>
+                </router-link>
+              </div>
             </div>
           </div>
 
@@ -285,6 +287,12 @@ export default {
     },
   },
   methods: {
+    windowonload() {
+      if (!localStorage.justOnce5) {
+        localStorage.setItem("justOnce5", "true");
+        window.location.reload();
+      }
+    },
     streetValid() {
       let regex = RegExp(/^[a-zA-Z0-9 ,.+-\u00E4\u00F6\u00FC\u00C4\u00D6\u00DC\u00df]{2,30}$/);
       if (regex.test(this.changeStreet)) {

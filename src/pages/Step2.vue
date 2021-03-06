@@ -75,16 +75,20 @@
 
 
             <div class="form_action">
-              <router-link to="/step1" class="link">
-                <img src="../static/images/icons/arrow-left.svg" alt="">
+              <router-link to="/step1" class="link" >
+                <img src="../static/images/icons/arrow-left.svg" alt="" >
                 Back
               </router-link>
-              <router-link to="/step3">
-                <button class="button" name="next2" type="submit" @click="submitHandler"
-                        :disabled="emptyForm || cntBtnStatus || maximumCar">
-                  Continue
-                </button>
-              </router-link>
+              <div @click="windowonload">
+                <router-link to="/step3">
+                  <button class="button" name="next2" type="reset" @click="submitHandler"
+                          :disabled="emptyForm || cntBtnStatus || maximumCar">
+                    Continue
+                  </button>
+                </router-link>
+              </div>
+
+
             </div>
           </div>
         </div>
@@ -231,6 +235,12 @@ export default {
     },
   },
   methods: {
+    windowonload  () {
+      if (! localStorage.justOnce2) {
+        localStorage.setItem("justOnce2", "true");
+        window.location.reload();
+      }
+    },
     submitHandler() {
       const step2 = {
         ModelYear: this.form.ModelYear,

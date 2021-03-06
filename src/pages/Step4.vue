@@ -237,11 +237,13 @@
                     <img src="../static/images/icons/arrow-left.svg" alt="">
                     Back
                   </router-link>
-                  <router-link to="/step5" class="link">
-                    <button class="button" name="next" type="submit" :disabled="cntBtnStatus" @click="submitHandler">
-                      Continue
-                    </button>
-                  </router-link>
+                  <div @click="windowonload">
+                    <router-link to="/step5" class="link">
+                      <button class="button" name="next" type="reset" :disabled="cntBtnStatus" @click="submitHandler">
+                        Continue
+                      </button>
+                    </router-link>
+                  </div>
                 </div>
               </div>
             </div>
@@ -302,6 +304,12 @@ export default {
   computed: {
   },
   methods: {
+    windowonload() {
+      if (!localStorage.justOnce4) {
+        localStorage.setItem("justOnce4", "true");
+        window.location.reload();
+      }
+    },
     submitHandler() {
       const step4 = {
         ComprehensiveBooleane: this.form.ComprehensiveBooleane,

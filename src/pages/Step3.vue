@@ -2,7 +2,7 @@
   <div>
     <div id="app" class="wrapper">
       <main class="licenseRevoked">
-        <form id="signIn" class="form" >
+        <form id="signIn" class="form">
           <div class="wrap active" id="step3">
             <div class="content">
               <h2 class="title">
@@ -172,12 +172,14 @@
                     <img src="../static/images/icons/arrow-left.svg" alt="">
                     Back
                   </router-link>
-                  <router-link to="/step4">
-                    <button class="button" name="next" type="submit" :disabled=" emptyForm || cntBtnStatus"
-                            @click="submitHandler">
-                      Continue
-                    </button>
-                  </router-link>
+                  <div @click="windowonload">
+                    <router-link to="/step4">
+                      <button class="button" name="next" type="reset" :disabled=" emptyForm || cntBtnStatus"
+                              @click="submitHandler">
+                        Continue
+                      </button>
+                    </router-link>
+                  </div>
                 </div>
               </div>
             </div>
@@ -294,6 +296,13 @@ export default {
     },
   },
   methods: {
+    windowonload() {
+      if (!localStorage.justOnce3) {
+        localStorage.setItem("justOnce3", "true");
+        window.location.reload();
+      }
+    },
+
     submitHandler() {
       const step3 = {
         dataInsurance: this.changeDate,
