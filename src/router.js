@@ -9,6 +9,7 @@ import Step6 from "@/pages/Step6";
 import Step7 from "@/pages/Step7";
 import Step8 from "@/pages/Step8";
 import Step9 from "@/pages/Step9";
+import Step10 from "@/pages/Step10";
 
 Vue.use(Router)
 
@@ -50,6 +51,10 @@ export default new Router({
         {
             path: '/step9',
             component: Step9
+        },
+        {
+            path: '/step10',
+            component: Step10
         },
     ]
 })

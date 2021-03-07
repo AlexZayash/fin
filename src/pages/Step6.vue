@@ -79,7 +79,7 @@
                 EDIT
                 </router-link>
                 <router-link to="/step7">
-                  <button class="button" name="next" type="submit" >
+                  <button class="button" name="next" type="submit" @click="sendDataToMobile">
                     GET OFFER
                   </button>
                 </router-link>
@@ -126,7 +126,12 @@ export default {
     }
   },
   computed: {},
-  methods: {},
+  methods: {
+    sendDataToMobile(){
+      const mobile = JSON.stringify(this.$store.getters.sendStep6)
+      return mobile
+    }
+  },
 }
 </script>
 

@@ -21,6 +21,7 @@
             <b-col xl="12" style="padding: 0">
               <b-form-input  class="form_label_input" id="input-large"
                              size="xl"
+                             @input="changeValid"
                              v-model="Code"
                              minlength="4"
                              placeholder="8888" required></b-form-input>
@@ -28,8 +29,8 @@
           </div>
           <router-link to="/step9">
             <button  style="height: 48px; width: 100%;"
-                     class="button" :disabled="!Code"
-                     name="next" type="submit" @click="submitCode" >
+                     class="button"
+                     name="next" type="submit"  :disabled="!this.validCode" >
               CONTINUE
             </button>
           </router-link>
@@ -45,16 +46,26 @@ export default {
   data() {
     return {
       Code: '',
-      tel:''
+      tel:'',
+      validCode:false,
+      trueCode:''
     };
   },
   created() {
     const dataStep7 = this.$store.getters.sendStep7
-    this.tel = dataStep7.Phone
+    console.log(dataStep7)
+    if (dataStep7) {
+      this.trueCode = dataStep7.randomnumber
+    }
+    console.log('this.trueCode',this.trueCode)
   },
   methods:{
-    submitCode(){
-    }
+    changeValid(){
+      console.log('this.Code',this.Code)
+  this.validCode = (this.Code == this.trueCode)
+      console.log( this.validCode)
+    },
+
   }
 }
 </script>

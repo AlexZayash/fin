@@ -31,6 +31,10 @@ export default  new Vuex.Store({
     addFormStep7ToData(state, step7){
       state.data.step7={...step7}
       localStorage.setItem('data',JSON.stringify(state.data))
+    },
+    addMobileDataToData(state, data){
+      state.data={...data}
+      localStorage.setItem('data',JSON.stringify(state.data))
     }
 
   },
@@ -52,6 +56,9 @@ export default  new Vuex.Store({
     },
     addFormStep7({commit}, step7){
       commit('addFormStep7ToData', step7)
+    },
+    addMobileData({commit}, data){
+      commit('addMobileDataToData', data)
     },
 },
   getters:{

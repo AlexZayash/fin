@@ -1,7 +1,7 @@
 <template>
   <div>
     <main class="licenseRevoked">
-      <form id="signIn" class="form" >
+      <form id="signIn" class="form">
         <div class="wrap active" id="step2">
           <div class="content">
             <h2 class="title">
@@ -18,50 +18,53 @@
             </div>
 
             <div class="form_label">
-            <span class="form_span">Car model code (optional)</span>
-            <b-col xl="12" style="padding: 0">
-              <b-form-input class="form_label_input" id="input-large" @keyup="carModelChange"
-                            size="xl"
-                            :value="changeCar"
-                            maxlength="6"
-                            :disabled="!form.ModelYear || !reqCar" :disable-search="true"
-                            placeholder="1AB234"></b-form-input>
-            </b-col></div>
-
-            <div class="form_label">
-            <span class="form_span">Brand</span>
-            <b-form-select v-model="form.Brand"
-                           @change="brandChange"
-                           :disabled="!brandList.length"
-            >
-              <option v-for="brand in this.brandList" :key="brand.key" :value="brand">{{ brand.name }}</option>
-            </b-form-select>
+              <span class="form_span">Car model code (optional)</span>
+              <b-col xl="12" style="padding: 0">
+                <b-form-input class="form_label_input" id="input-large" @keyup="carModelChange"
+                              size="xl"
+                              :value="changeCar"
+                              maxlength="6"
+                              :disabled="!form.ModelYear || !reqCar" :disable-search="true"
+                              placeholder="1AB234"></b-form-input>
+              </b-col>
             </div>
 
             <div class="form_label">
-            <span class="form_span">Model line</span>
-            <b-form-select v-model="form.ModelLine"
-                           :placeholder="!modelLineList.length ? 'No respond to the request. Please, try another option' : 'Select required'"
-                           @change="modelLineChange"
-
-                           :disabled="!modelLineList.length || !form.Brand"
-            >
-              <option v-for="model in  this.modelLineList" :key="model.nameShort" :value="model.nameShort">
-                {{ model.nameShort }}
-              </option>
-            </b-form-select>
+              <span class="form_span">Brand</span>
+              <b-form-select v-model="form.Brand"
+                             @change="brandChange"
+                             :disabled="!brandList.length"
+              >
+                <option v-for="brand in this.brandList" :key="brand.key" :value="brand">{{ brand.name }}</option>
+              </b-form-select>
             </div>
 
             <div class="form_label">
-            <span class="form_span">Fuel type</span>
-            <b-form-select v-model="form.FuelType"
-                           placeholder="Select required"
-                           @change="fuelTypeChange"
-                           :disabled="!fuelTypeList.length || !form.ModelLine"
-            >
-              <option v-for="(fuelType,index) in  this.fuelTypeList" :key="index" :value="fuelType">{{ fuelType.name }}
-              </option>
-            </b-form-select>
+              <span class="form_span">Model line</span>
+              <b-form-select v-model="form.ModelLine"
+                             :placeholder="!modelLineList.length ? 'No respond to the request. Please, try another option' : 'Select required'"
+                             @change="modelLineChange"
+
+                             :disabled="!modelLineList.length || !form.Brand"
+              >
+                <option v-for="model in  this.modelLineList" :key="model.nameShort" :value="model.nameShort">
+                  {{ model.nameShort }}
+                </option>
+              </b-form-select>
+            </div>
+
+            <div class="form_label">
+              <span class="form_span">Fuel type</span>
+              <b-form-select v-model="form.FuelType"
+                             placeholder="Select required"
+                             @change="fuelTypeChange"
+                             :disabled="!fuelTypeList.length || !form.ModelLine"
+              >
+                <option v-for="(fuelType,index) in  this.fuelTypeList" :key="index" :value="fuelType">{{
+                    fuelType.name
+                  }}
+                </option>
+              </b-form-select>
             </div>
 
             <span class="form_span">Model</span>
@@ -75,8 +78,8 @@
 
 
             <div class="form_action">
-              <router-link to="/step1" class="link" >
-                <img src="../static/images/icons/arrow-left.svg" alt="" >
+              <router-link to="/step1" class="link">
+                <img src="../static/images/icons/arrow-left.svg" alt="">
                 Back
               </router-link>
               <div @click="windowonload">
@@ -158,14 +161,13 @@ export default {
       errorMsg: '',
       cookieMsg: false,
       cntBtnStatus: false,
-      px:false
+      px: false
     };
   },
   mounted() {
 
   },
   created() {
-
     this.loader = true;
     axios.get(this.endPoint + '/api/dextra/Dictionary/Fuel?v=4.0', {headers: {'Accept-Language': 'en'}}).then(response => {
       if (response.status === 200) {
@@ -177,17 +179,22 @@ export default {
       this.errorMsg = this.httpError(1);
     });
     const dataStep2 = this.$store.getters.sendStep2
-    console.log(dataStep2)
-    if(dataStep2){
+    if (dataStep2) {
       this.form.ModelYear = dataStep2.ModelYear
       this.modelYearChangeStore()
       this.Model = dataStep2.ModelCode
       this.form.Brand = dataStep2.Brand
       this.brandChangeStore()
       this.form.ModelLine = dataStep2.ModelLine
-      this.modelLineChangeStore()
-      this.form.FuelType = dataStep2.FuelType
-      this.form.ModelStruc = dataStep2.ModelStruc
+      this.modelLineChangeStore().then(() => {
+            console.log('this.modelListDict', this.modelListDict)
+        this.fuelTypeChange()
+            this.form.FuelType = dataStep2.FuelType
+
+            this.form.ModelStruc = dataStep2.ModelStruc
+          }
+      )
+
     }
   },
   computed: {
@@ -235,8 +242,8 @@ export default {
     },
   },
   methods: {
-    windowonload  () {
-      if (! localStorage.justOnce2) {
+    windowonload() {
+      if (!localStorage.justOnce2) {
         localStorage.setItem("justOnce2", "true");
         window.location.reload();
       }
@@ -286,7 +293,7 @@ export default {
         self.resetVehicle();
         this.loader = true;
         axios.get(this.endPoint + '/api/dextra/Autobase/Carmake?year=' + this.form.ModelYear + '&v=4.0', {headers: {'Accept-Language': 'en'}}).then(response => {
-          console.log('modelYearChange',response.status)
+          console.log('modelYearChange', response.status)
           if (response.status === 200) {
             this.brandList = response.data.success;
             this.loader = false;
@@ -311,7 +318,7 @@ export default {
         self.resetVehicle();
         this.loader = true;
         axios.get(this.endPoint + '/api/dextra/Autobase/Carmake?year=' + this.form.ModelYear + '&v=4.0', {headers: {'Accept-Language': 'en'}}).then(response => {
-          console.log('modelYearChange',response.status)
+          console.log('modelYearChange', response.status)
           if (response.status === 200) {
             this.form.Brand = null;
             this.brandList = response.data.success;
@@ -380,12 +387,15 @@ export default {
     modelLineChangeStore() {
       if (this.form.Brand && this.form.Brand.key !== '' && this.form.ModelLine && this.form.ModelYear !== 0)
         this.loader = true;
-      axios.get(this.endPoint + '/api/dextra/Autobase/carmodification?carMake=' + this.form.Brand.key + '&shortModelName=' + this.form.ModelLine + '&year=' + this.form.ModelYear + '&v=4.0', {headers: {'Accept-Language': 'en'}}).then(response => {
-        console.log('modelLineChangeStore',response.data.success)
+      return axios.get(this.endPoint + '/api/dextra/Autobase/carmodification?carMake=' + this.form.Brand.key + '&shortModelName=' + this.form.ModelLine + '&year=' + this.form.ModelYear + '&v=4.0', {headers: {'Accept-Language': 'en'}}).then(response => {
+        console.log('modelLineChangeStore', response.data.success)
         if (response.status === 200) {
           this.form.ModelStruc = [];
+
           response.data.success.forEach(item => {
+
             if (this.modelListDict[item.fuel]) {
+              console.log('this.modelListDict', this.modelListDict)
               let oldItems = this.modelListDict[item.fuel];
               oldItems.push(item);
               this.modelListDict[item.fuel] = oldItems;
@@ -403,7 +413,7 @@ export default {
           });
           if (this.fuelTypeList.length === 1) {
             this.form.FuelType = this.fuelTypeList[0];
-            this.fuelTypeChangeStore(0);
+            this.fuelTypeChange();
           }
           this.loader = false;
         } else {
@@ -461,10 +471,10 @@ export default {
       });
     },
     fuelTypeChange() {
-      this.modelList = [];
+      this.modelList = []
       this.form.Model = [];
       this.form.ModelStruc = null;
-      this.modelList = this.modelListDict[this.form.FuelType.key];
+      this.modelList = {...this.modelListDict}[2];
       this.changeModelList();
     },
     modelStrucChange() {

@@ -10,7 +10,7 @@
           <div class="step-wrap">
 
             <span>On top of the insurers discount, we will give you an additional CHF 85. Choose the insurers you wish to receive an offer from:</span>
-            <div class="s1">
+            <label class="s1">
               <b-form-checkbox
                   id="checkbox-1"
                   v-model="company1"
@@ -20,8 +20,8 @@
               >
                 Simpego
               </b-form-checkbox>
-            </div>
-            <div class="s1" >
+            </label>
+            <label class="s1" >
               <b-form-checkbox
                   id="checkbox-2"
                   v-model="company2"
@@ -31,8 +31,8 @@
               >
                 Company 2
               </b-form-checkbox>
-            </div>
-            <div class="s1">
+            </label>
+            <label class="s1">
               <b-form-checkbox
                   id="checkbox-3"
                   v-model="company3"
@@ -42,8 +42,8 @@
               >
                 Company 3
               </b-form-checkbox>
-            </div>
-            <div class="s1">
+            </label>
+            <label class="s1">
               <b-form-checkbox
                   id="checkbox-4"
                   v-model="company4"
@@ -53,7 +53,7 @@
               >
                 Company 4
               </b-form-checkbox>
-            </div>
+            </label>
             <span>Or keep driving, improve your driving score and save more!</span>
 
              <div @click="windowonload">
@@ -76,6 +76,7 @@ export default {
   name: "Step1",
   data() {
     return {
+      dataMobile: '',
       company1: false,
       company2: false,
       company3: false,
@@ -83,17 +84,25 @@ export default {
     }
   },
   created() {
-
      const dataStep1 = this.$store.getters.sendStep1
     if(dataStep1){
       this.company1 = dataStep1.company1
       this.company2 = dataStep1.company2
       this.company3 = dataStep1.company3
       this.company4 = dataStep1.company4
+    } else {
+      this.dataMobile = this.dataFromMobile()
     }
-
+  if(this.dataMobile){
+    this.$store.dispatch('addMobileData', this.dataMobile)
+  }
   },
   methods: {
+    dataFromMobile(){
+     const data=''
+         // = JSON.parse(dataMobile)
+      return data
+    },
     windowonload  () {
       if (! localStorage.justOnce1) {
         localStorage.setItem("justOnce1", "true");
@@ -108,7 +117,6 @@ export default {
         company4: this.company4,
       }
       console.log(step1)
-      // await this.windowonload()
       this.$store.dispatch('addFormStep1', step1)
     }
 

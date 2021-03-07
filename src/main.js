@@ -14,6 +14,8 @@ Vue.use(IconsPlugin)
 Vue.config.productionTip = false
 Vue.use(VueAxios, axios)
 
+
+
 new Vue({
   ButtonPlugin,BootstrapVue,IconsPlugin,
   axios,

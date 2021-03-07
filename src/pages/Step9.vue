@@ -1,70 +1,106 @@
 <template>
-  <main class="licenseRevoked">
-    <form id="signIn" class="form">
-      <div class="wrap active" id="step7">
-        <div class="content">
-          <h2 class="title">
-            Email
-          </h2>
-
-          <div class="step-wrap">
-            <div class="form_label">
-              <div class="form_label_head">
-                <div>
-                  The insurance company will send you the offer to this mail
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="step-wrap">
-            <div class="form_label">
-              <div class="form_label_head">
-                <div>
-                  Enter your email
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="form_label">
-            <span class="form_span">Phone</span>
-            <b-col xl="12" style="padding: 0">
-              <b-form-input  class="form_label_input" id="input-large"
-                             v-model="Email"
-                             size="xl"
-                             :value="Email"
-                             placeholder="max.muster@mustermail.ch" type="email" required></b-form-input>
-            </b-col>
-          </div>
-          <router-link to="/step9">
-            <button style="height: 48px; width: 100%;"
-                    class="button" :disabled="!Email"
-                    name="next" type="submit" @click="submitEmail">
-              CONTINUE
-            </button>
-          </router-link>
-        </div>
-      </div>
+  <div class="container">
+    <form @submit.prevent="sendEmail">
+      <label>Name</label>
+      <input
+          type="text"
+          v-model="name"
+          name="name"
+          placeholder="Your Name"
+      >
+      <label>Email</label>
+      <input
+          type="email"
+          v-model="email"
+          name="email"
+          placeholder="Your Email"
+      >
+      <router-link to="/step10">
+        <button  style="height: 48px; width: 100%;"
+                 class="button"
+                 name="next" type="submit"  :disabled="!this.email ||!this.name" >
+          CONTINUE
+        </button>
+      </router-link>
     </form>
-  </main>
+  </div>
 </template>
-
 <script>
+
+import emailjs from 'emailjs-com';
+
 export default {
-  name: "Step9",
+  name: 'Step9',
+
   data() {
     return {
-      Email: ''
-    };
-  },
-  methods: {
-    submitEmail() {
-
+      name: '',
+      email: '',
+      message: 'qqqqqqqqqqqqqqqqqqqqqqqqqqqq'
     }
+  },
+
+  methods: {
+    sendEmail(e) {
+      try {
+        emailjs.sendForm('service_4vlc0dh', 'template_rzw419o', e.target, 'user_RJkbmNr8UMMt8jSd1hh4l', {
+          name: this.name,
+          email: this.email,
+          message: this.message
+        })
+        console.log('it works!!!')
+      } catch (error) {
+        console.log({error})
+      }
+      // Reset form field
+      this.name = ''
+      this.email = ''
+
+    },
   }
 }
 </script>
 
 <style scoped>
+* {
+  box-sizing: border-box;
+}
 
+label {
+  float: left;
+}
+
+input[type=text], [type=email], textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  margin-top: 6px;
+  margin-bottom: 16px;
+  resize: vertical;
+}
+
+input[type=submit] {
+  background-color: #4CAF50;
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+input[type=submit]:hover {
+  background-color: #b8c7b9;
+}
+
+.container {
+  display: block;
+  margin: auto;
+  text-align: center;
+  border-radius: 5px;
+  background-color: #f2f2f2;
+  padding: 20px;
+  width: 50%;
+}
 </style>
